@@ -15,9 +15,9 @@ suite('Functional Tests', function() {
       .end(function(err, res) {
         assert.equal(res.status, 200);
         assert.equal(res.body.initNum, 10);
-        assert.equal(res.body.initUnit.toLowerCase(), 'l');
-        assert.approximately(res.body.returnNum, 2.64172, 0.1); // within tolerance
-        assert.equal(res.body.returnUnit.toLowerCase(), 'gal');
+        assert.equal(res.body.initUnit, 'L'); // must be uppercase L
+        assert.approximately(res.body.returnNum, 2.64172, 0.1);
+        assert.equal(res.body.returnUnit, 'gal');
         done();
       });
   });
@@ -66,7 +66,7 @@ suite('Functional Tests', function() {
       .end(function(err, res) {
         assert.equal(res.status, 200);
         assert.equal(res.body.initNum, 1);
-        assert.equal(res.body.initUnit.toLowerCase(), 'kg');
+        assert.equal(res.body.initUnit, 'kg');
         done();
       });
   });
