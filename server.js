@@ -1,52 +1,26 @@
 'use strict';
 
-const express     = require('express');
-const bodyParser  = require('body-parser');
-const expect      = require('chai').expect;
-const cors        = require('cors');
-require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const apiRoutes = require('./routes/api.js');
 
-const apiRoutes         = require('./routes/api.js');
-const fccTestingRoutes  = require('./routes/fcctesting.js');
-const runner            = require('./test-runner');
+const app = express();
 
-let app = express();
-
-app.use('/public', express.static(process.cwd() + '/public'));
-
-app.use(cors({origin: '*'})); // For FCC testing purposes only
-
+// Middleware
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Index page (static HTML)
-app.route('/')
-  .get(function (req, res) {
-    res.sendFile(process.cwd() + '/views/index.html');
+// Routing
+apiRoutes(app);
+
+// Start server only if run directly, not during testing
+if (require.main === module) {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
   });
-
-// For FCC testing purposes
-fccTestingRoutes(app);
-
-// Routing for API 
-apiRoutes(app);  
-
-// 404 Not Found Middleware
-app.use(function(req, res, next) {
-  res.status(404)
-    .type('text')
-    .send('Not Found');
-});
-
-const port = process.env.PORT || 5000;
-
-// ✅ Only start server if not in test mode
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, '0.0.0.0', function () {
-    console.log("Listening on port " + port);
-  });
-} else {
-  console.log("Test mode: server not started on port");
 }
 
 // Export app for testing
