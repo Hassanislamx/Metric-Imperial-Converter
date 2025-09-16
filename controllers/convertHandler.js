@@ -73,7 +73,7 @@ function ConvertHandler() {
         result = initNum / lbsToKg;
         break;
       default:
-        result = 'invalid unit';
+        return 'invalid unit';
     }
     
     return Math.round(result * 100000) / 100000;
