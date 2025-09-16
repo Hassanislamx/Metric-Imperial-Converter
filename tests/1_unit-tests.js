@@ -63,7 +63,7 @@ suite('Unit Tests', function(){
       assert.equal(convertHandler.getUnit(32+'hello'),'invalid unit');
       done();
     });
-  }
+  });
 
 
         
